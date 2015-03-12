@@ -1,2 +1,2 @@
-# csci311-project-api
+# CSCI311 Project API
 API for the CSCI311 Project
