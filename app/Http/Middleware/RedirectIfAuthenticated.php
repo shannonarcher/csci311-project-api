@@ -35,7 +35,7 @@ class RedirectIfAuthenticated {
 	{
 		if ($this->auth->check())
 		{
-			return new RedirectResponse(url('/home'));
+			abort(403, 'Unauthorised request.');
 		}
 
 		return $next($request);
