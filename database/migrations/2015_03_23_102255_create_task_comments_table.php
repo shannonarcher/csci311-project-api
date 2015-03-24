@@ -18,11 +18,11 @@ class CreateTaskCommentsTable extends Migration {
 			$table->string('comment', 400);
 			$table->timestamp('archived_at')->nullable();
 
-			$table->integer('user_id')->unsigned();
-			$table->foreign('user_id')->references('id')->on('users');
+			$table->integer('created_by')->unsigned();
+			$table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
 
 			$table->integer('task_id')->unsigned();
-			$table->foreign('task_id')->references('id')->on('tasks');
+			$table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
 
 			$table->timestamps();
 		});

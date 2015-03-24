@@ -13,8 +13,17 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
 		Model::unguard();
+		
+		DB::table('projects')->delete();
+		DB::table('users')->delete();
+		DB::table('roles')->delete();
+		DB::table('tasks')->delete();
+		DB::table('milestones')->delete();
 
-		// $this->call('UserTableSeeder');
+		$this->call('UserTableSeeder');
+		$this->call('ProjectTableSeeder');
+		$this->call('TaskTableSeeder');
+		$this->call('MilestoneTableSeeder');
 	}
 
 }

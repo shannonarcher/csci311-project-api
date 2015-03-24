@@ -17,9 +17,12 @@ class CreateMilestoneTable extends Migration {
 			$table->increments('id');
 			$table->string('title', 100)->default('');
 			$table->timestamp('completed_at');
+
+			$table->integer('created_by')->unsigned();
+			$table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
 			
 			$table->integer('project_id')->unsigned();
-			$table->foreign('project_id')->references('id')->on('projects');
+			$table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 
 			$table->timestamps();
 		});
@@ -28,10 +31,10 @@ class CreateMilestoneTable extends Migration {
 			$table->increments('id');
 
 			$table->integer('task_id')->unsigned();
-			$table->foreign('task_id')->references('id')->on('tasks');
+			$table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
 
 			$table->integer('milestone_id')->unsigned();
-			$table->foreign('milestone_id')->references('id')->on('milestones');
+			$table->foreign('milestone_id')->references('id')->on('milestones')->onDelete('cascade');
 
 			$table->timestamps();
 		});

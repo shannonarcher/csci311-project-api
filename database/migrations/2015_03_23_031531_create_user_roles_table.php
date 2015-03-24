@@ -13,17 +13,24 @@ class CreateUserRolesTable extends Migration {
 	public function up()
 	{
 		//
-		Schema::create('user_roles', function(Blueprint $table) 
+		Schema::create('roles', function(Blueprint $table) 
 		{
 			$table->increments('id');
 			$table->string('name', 30);
 			$table->timestamps();
 		});
 
-		Schema::table('users', function ($table) 
+		Schema::create('user_roles', function ($table) 
 		{
+			$table->increments('id');
+
+			$table->integer('user_id')->unsigned();
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
 			$table->integer('role_id')->unsigned();
-			$table->foreign('role_id')->references('id')->on('user_roles');
+			$table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+
+			$table->timestamps();
 		});
 	}
 
@@ -35,13 +42,8 @@ class CreateUserRolesTable extends Migration {
 	public function down()
 	{
 		//
+		Schema::drop('roles');
 		Schema::drop('user_roles');
-
-		Schema::table('users', function ($table) 
-		{
-			$table->dropForeign('role_id');
-			$table->dropColumn('role_id');
-		});
 	}
 
 }
