@@ -38,7 +38,7 @@ Route::post('/users/password/set', ['uses' => 'UserController@setPassword']);
 
 /** PROJECT ROUTES **/
 Route::post('/projects', ['uses' => 'ProjectController@create']);
-Route::get('/projects', ['uses' => 'ProjectController@getOwn']);
+Route::get('/projects', ['uses' => 'ProjectController@getAll']);
 Route::get('/projects/{project}', ['uses' => 'ProjectController@get']);
 Route::get('/projects/archived', ['uses' => 'ProjectController@getArchived']);
 Route::put('/projects/{project}', ['uses' => 'ProjectController@update']);
@@ -50,7 +50,7 @@ Route::post('/projects/{project}/assignManager/{user}', ['uses' => 'ProjectContr
 Route::post('/projects/{project}/assign/{user}', ['uses' => 'ProjectController@assignUser']);
 
 Route::post('/projects/{project}/tasks', ['uses' => 'ProjectController@createTask']);
-Route::get('/projects/{project}/tasks', ['uses' => 'ProjectController@getTasks'])
+Route::get('/projects/{project}/tasks', ['uses' => 'ProjectController@getTasks']);
 
 Route::post('/projects/{project}/milestones', ['uses' => 'ProjectController@createMilestone']);
 Route::get('/projects/{project}/milestones', ['uses' => 'ProjectController@getMilestones']);
@@ -80,7 +80,7 @@ Route::delete('/tasks/{task}/depends-on/{task}', ['uses' => 'TaskController@dele
 
 /** TASK COMMENT ROUTES **/
 Route::get('/comments/{comment}', ['uses' => 'TaskCommentController@get']);
-Route::put('/comments/{comment}', ['uses' => 'TaskCommentController@create']);
+Route::put('/comments/{comment}', ['uses' => 'TaskCommentController@update']);
 
 Route::post('/comments/{comment}/archive', ['uses' => 'TaskCommentController@archive']);
 Route::post('/comments/{comment}/unarchive', ['uses' => 'TaskCommentController@archive']);
