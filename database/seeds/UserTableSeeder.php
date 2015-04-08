@@ -3,7 +3,6 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Role;
 use App\User;
 
 class UserTableSeeder extends Seeder {
@@ -15,29 +14,24 @@ class UserTableSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		$admin = Role::create(['name'=>'admin']);
-		$member = Role::create(['name'=>'member']);
-
 		$john = User::create([
 			'name' => 'John Public',
-			'email' => 'john.public@example.com',
-			'password' => Hash::make(str_random(20))
+			'email' => 'john@liquidly.com',
+			'password' => Hash::make("admin"),
+			'is_admin' => 1
 		]);
-		$john->roles()->attach($admin);
 
 		$jane = User::create([
 			'name' => 'Jane Public',
-			'email' => 'jane.public@example.com',
+			'email' => 'jane@liquidly.com',
 			'password' => Hash::make(str_random(20))
 		]);
-		$jane->roles()->attach($member);
 
 		$sam = User::create([
 			'name' => 'Sam Public',
-			'email' => 'sam.public@example.com',
+			'email' => 'sam@liquidly.com',
 			'password' => Hash::make(str_random(20))
 		]);
-		$sam->roles()->attach($member);
 
 	}
 

@@ -19,9 +19,7 @@ class MilestoneTableSeeder extends Seeder {
 	{
 
 		$user = User::first();
-		$user2 = User::whereHas('roles', function ($q) {
-			$q->where('name', '=', 'member');
-		})->first();
+		$user2 = User::where('is_admin', '=', '0')->first();
 
 		$project1 = Project::first();
 

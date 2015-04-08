@@ -3,10 +3,11 @@
 use Closure;
 
 use \Response;
+use \Route;
 
 use App\User;
 
-class Authenticate {
+class IsUserOwner {
 
 	/**
 	 * Handle an incoming request.
@@ -18,11 +19,11 @@ class Authenticate {
 	public function handle($request, Closure $next)
 	{
 		$user = User::where('session_token', '=', $request->input('session_token'))->first();
-		if ($user == null)
-			return Response::json(['message' => 'Unauthorised request'], 400);
-		else if ($user->is_archived == 1)
-			return Response::json(['message' => 'Unauthorised request (archived)'], 400);
-		return $next($request);
+
+		if ($user->id == Route::input('user')->id || $user->is_admin == 1)
+			return $next($request);
+		else 
+			return Response::json(["message" => "User cannot edit another user without admin privileges"], 400);
 	}
 
 }

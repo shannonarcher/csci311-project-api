@@ -20,8 +20,10 @@ class TaskController extends Controller {
 	public function rejectDeletion(App\Task $task) {}
 
 	public function approveTask(App\Task $task) {}
+	pubilc function unapproveTask(App\Task $task) {}
 
 	public function assignUser(App\Task $task, App\User $user) {}
+	public function unassignUser(App\Task $task, App\User $user) {}
 
 	public function createComment(App\Task $task) {}
 	public function getComments(App\Task $task) {}

@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder {
 		
 		DB::table('projects')->delete();
 		DB::table('users')->delete();
-		DB::table('roles')->delete();
 		DB::table('tasks')->delete();
 		DB::table('milestones')->delete();
 

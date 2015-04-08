@@ -12,7 +12,9 @@ class ProjectController extends Controller {
 
 	}
 
-	public function create() {}
+	// Sprint 1
+	public function create() {
+	}
 	public function getAll() {}
 	public function get(App\Project $project) {}
 	public function update(App\Project $project) {}
@@ -23,6 +25,7 @@ class ProjectController extends Controller {
 	public function assignManager(App\Project $project, App\User $user) {}
 	public function assignUser(App\Project $project, App\User $user) {}
 
+	// Sprint 2
 	public function createTask(App\Project $project) {}
 	public function getTasks(App\Project $project) {}
 
