@@ -24,11 +24,25 @@ class CreateTaskTable extends Migration {
 			$table->timestamp('approved_at')->nullable();			
 			$table->integer('approved_by')->unsigned()->nullable();
 
+			$table->integer('parent_id')->unsigned()->nullable();
+
 			$table->integer('created_by')->unsigned();
-			$table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+			$table->foreign('created_by')->references('id')->on('users');
 
 			$table->integer('project_id')->unsigned();
-			$table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+			$table->foreign('project_id')->references('id')->on('projects');
+
+			$table->timestamps();
+		});
+
+		Schema::create('tasks_dependencies', function (Blueprint $table) {
+			$table->increments('id');
+
+			$table->integer('independent_id')->unsigned();
+			$table->foreign('independent_id')->references('id')->on('tasks');
+
+			$table->integer('dependent_id')->unsigned();
+			$table->foreign('dependent_id')->references('id')->on('tasks');
 
 			$table->timestamps();
 		});

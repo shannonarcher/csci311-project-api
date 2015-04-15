@@ -27,7 +27,7 @@ class TaskTableSeeder extends Seeder {
 			'title' => "Initialize Project", 
 			'description' => "Create git repo and initial laravel project", 
 			'started_at' => new DateTime('@'.strtotime('+3 days')), 
-			'estimation_duration' => "P5D", 
+			'estimation_duration' => 5 * 86400, 
 			'approved_by' => $user->id, 
 			'approved_at' => new DateTime('now'),
 			'created_by' => $user2->id
@@ -36,7 +36,7 @@ class TaskTableSeeder extends Seeder {
 			'title' => "Develop migrations based on ERD", 
 			'description' => "Using ERD 1.0 create database migrations using eloquent ORM", 
 			'started_at' => strtotime('+7 days'), 
-			'estimation_duration' => "P5D", 
+			'estimation_duration' => 8 * 86400, 
 			'approved_by' => $user->id, 
 			'approved_at' => strtotime('now'),
 			'created_by' => $user2->id

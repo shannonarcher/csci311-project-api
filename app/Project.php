@@ -12,6 +12,10 @@ class Project extends Model {
 		return $this->belongsToMany('App\User', 'project_users')->withPivot('is_manager');
 	}
 
+	public function managers() {
+		return $this->belongsToMany('App\User', 'project_users')->wherePivot('is_manager', '=', '1');
+	}
+
 	public function tasks() {
 		return $this->hasMany('App\Task');
 	}

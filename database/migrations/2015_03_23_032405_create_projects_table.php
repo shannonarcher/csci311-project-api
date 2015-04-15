@@ -17,6 +17,9 @@ class CreateProjectsTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 100);
 			$table->timestamp('archived_at')->nullable();
+			$table->timestamp('started_at');
+			$table->timestamp('expected_completed_at');
+			$table->timestamp('actual_completed_at')->nullable();
 
 			$table->integer('created_by')->unsigned();
 			$table->foreign('created_by')->references('id')->on('users');

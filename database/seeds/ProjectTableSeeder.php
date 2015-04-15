@@ -21,12 +21,16 @@ class ProjectTableSeeder extends Seeder {
 
 		$project1 = Project::create([
 				'name' => 'CSCI311',
-				'created_by' => $user->id
+				'created_by' => $user->id,
+				'started_at' => new DateTime('@'.strtotime('+3 days')),
+				'expected_completed_at' => new DateTime('@'.strtotime('+30 days'))
 			]);
 
 		$project2 = Project::create([
 				'name' => 'CSCI312',
-				'created_by' => $user->id
+				'created_by' => $user->id,
+				'started_at' => new DateTime('@'.strtotime('-3 days')),
+				'expected_completed_at' => new DateTime('@'.strtotime('+60 days'))
 			]);
 
 		$project1->users()->attach($user2, ['is_manager'=>false]);

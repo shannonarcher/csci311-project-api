@@ -19,10 +19,12 @@ class DatabaseSeeder extends Seeder {
 		DB::table('tasks')->delete();
 		DB::table('milestones')->delete();
 
-		$this->call('UserTableSeeder');
+		/*$this->call('UserTableSeeder');
 		$this->call('ProjectTableSeeder');
 		$this->call('TaskTableSeeder');
-		$this->call('MilestoneTableSeeder');
+		$this->call('MilestoneTableSeeder');*/
+
+		$this->call('TestDataSeeder');
 	}
 
 }
