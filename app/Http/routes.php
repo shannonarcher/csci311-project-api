@@ -1,11 +1,11 @@
 <?php
 
-Route::get('/', function () {
+/*Route::get('/', function () {
 	return View::make('testdata', [
 			'users' => App\User::orderBy('is_admin', 'DESC')->orderBy('name', 'ASC')->get(),
 			'projects' => App\Project::with('managers','users','tasks.resources','users.skills','tasks','tasks.comments','tasks.approvedBy','tasks.comments.createdBy','tasks.dependencies','tasks.createdBy','milestones','createdBy')->get()
 			]);
-});
+});*/
 
 // Sprint 1
 /** USER ROUTES **/
@@ -13,11 +13,13 @@ Route::post('/users', ['middleware' => ['auth', 'isAdmin'], 'uses' => 'UserContr
 Route::get('/users', ['middleware' => 'auth', 'uses' => 'UserController@getAll']);
 Route::get('/users/{user}', ['middleware' => 'auth', 'uses' => 'UserController@get']);
 Route::put('/users/{user}', ['middleware' => ['auth', 'isUserOwner'], 'uses' => 'UserController@update']);
+Route::get('/user', ['middleware' => 'auth', 'uses' => 'UserController@getAuthed']);
 
 Route::post('/users/{user}/archive', ['middleware' => ['auth', 'isAdmin'], 'uses' => 'UserController@archive']);
 Route::post('/users/{user}/unarchive', ['middleware' => ['auth', 'isAdmin'], 'uses' => 'UserController@unarchive']);
 
 Route::post('/users/login', ['uses' => 'UserController@login']);
+Route::post('/users/logout', ['uses' => 'UserController@logout']);
 
 Route::post('/users/{user}/password/reset', ['middleware' => ['auth', 'isAdmin'], 'uses' => 'UserController@resetPassword']);
 
@@ -35,7 +37,7 @@ Route::post('/projects/{project}/assignManager/{user}', ['uses' => 'ProjectContr
 Route::post('/projects/{project}/assign/{user}', ['uses' => 'ProjectController@assignUser']);
 
 // Sprint 2
-/*Route::post('/projects/{project}/tasks', ['uses' => 'ProjectController@createTask']);
+Route::post('/projects/{project}/tasks', ['uses' => 'ProjectController@createTask']);
 Route::get('/projects/{project}/tasks', ['uses' => 'ProjectController@getTasks']);
 
 Route::post('/projects/{project}/milestones', ['uses' => 'ProjectController@createMilestone']);
@@ -43,10 +45,10 @@ Route::get('/projects/{project}/milestones', ['uses' => 'ProjectController@getMi
 
 Route::get('/projects/{project}/comments', ['uses' => 'ProjectController@getComments']);
 
-/** TASK ROUTES **//*
+/** TASK ROUTES **/
 Route::get('/tasks/{task}', ['uses' => 'TaskController@get']);
 Route::put('/tasks/{task}', ['uses' => 'TaskController@update']);
-Route::delete('/tasks/{task}', ['uses' => 'TaskController@delete']);
+/*Route::delete('/tasks/{task}', ['uses' => 'TaskController@delete']);
 
 Route::post('/tasks/{task}/delete/approve', ['uses' => 'TaskController@approveDeletion']);
 Route::post('/tasks/{task}/delete/reject', ['uses' => 'TaskController@rejectDeletion']);

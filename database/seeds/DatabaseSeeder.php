@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder {
 		DB::table('tasks')->delete();
 		DB::table('milestones')->delete();
 
-		DB::statement(DB::raw("SET foreign_key_checks = 0;"));
+		DB::statement(DB::raw("SET foreign_key_checks = 1;"));
 
-		/*$this->call('UserTableSeeder');
-		$this->call('ProjectTableSeeder');
+		$this->call('UserTableSeeder');
+		/*$this->call('ProjectTableSeeder');
 		$this->call('TaskTableSeeder');
 		$this->call('MilestoneTableSeeder');*/
 

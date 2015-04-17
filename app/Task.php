@@ -8,16 +8,8 @@ class Task extends Model {
 	protected $fillable = ['title', 'description', 'started_at', 'estimation_duration', 'approved_by', 'approved_at'];
 	protected $hidden = [];
 
-	public function user() {
-		return $this->belongsTo('App\User', 'created_by');
-	}
-
 	public function comments() {
 		return $this->hasMany('App\TaskComment');
-	}
-
-	public function milestones() {
-		return $this->belongsToMany('App\Milestone', 'milestone_tasks');
 	}
 
 	public function project() {
@@ -34,6 +26,10 @@ class Task extends Model {
 
 	public function parent() {
 		return $this->belongsTo('App\Task', 'parent_id');
+	}
+
+	public function children() {
+		return $this->hasMany('App\Task', 'parent_id');
 	}
 
 	public function dependencies() {

@@ -42,10 +42,17 @@ class UserController extends Controller {
 	}
 
 	public function getAll() {
-		return User::all();
+		return User::with('projects')->get();
 	}
 
 	public function get(User $user) {
+		$user->load('projects');
+		return $user;
+	}
+
+	public function getAuthed() {
+		$session_token = $this->request->input('session_token');
+		$user = User::where('session_token', '=', $session_token)->first();
 		return $user;
 	}
 
@@ -94,6 +101,18 @@ class UserController extends Controller {
 			return Response::json([
 				"message" => "Invalid Credentials"], 401);
 		}
+	}
+
+	public function logout() {
+		$session_token = $this->request->input('session_token');
+		$user = User::where('session_token', '=', $session_token);
+
+		if ($user != null) {
+			$user->session_token = "";
+			$user->save();
+		}
+		return Response::json([
+			"message" => "Logged out user."], 200);
 	}
 	
 	public function resetPassword(User $user) {

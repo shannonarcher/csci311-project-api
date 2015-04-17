@@ -9,7 +9,7 @@ class Project extends Model {
 	protected $hidden = [];
 
 	public function users() {
-		return $this->belongsToMany('App\User', 'project_users')->withPivot('is_manager')->orderBy('is_manager', 'ASC');
+		return $this->belongsToMany('App\User', 'project_users')->withPivot('is_manager')->orderBy('is_manager', 'DESC');
 	}
 
 	public function managers() {
@@ -17,11 +17,11 @@ class Project extends Model {
 	}
 
 	public function tasks() {
-		return $this->hasMany('App\Task');
+		return $this->hasMany('App\Task')->orderBy('updated_at', 'DESC');
 	}
 
 	public function comments() {
-		return $this->hasManyThrough('App\TaskComment', 'App\Task');
+		return $this->hasManyThrough('App\TaskComment', 'App\Task')->orderBy('updated_at', 'DESC');
 	}
 
 	public function milestones() {

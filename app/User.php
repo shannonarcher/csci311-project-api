@@ -15,7 +15,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $hidden = ['password', 'session_token', 'remember_token'];
 
 	public function projects() {
-		return $this->belongsToMany('App\Project', 'project_users');
+		return $this->belongsToMany('App\Project', 'project_users')->withPivot('is_manager');
 	}
 
 	public function skills() {

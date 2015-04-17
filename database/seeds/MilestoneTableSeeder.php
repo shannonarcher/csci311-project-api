@@ -17,7 +17,6 @@ class MilestoneTableSeeder extends Seeder {
 	 */
 	public function run()
 	{
-
 		$user = User::first();
 		$user2 = User::where('is_admin', '=', '0')->first();
 

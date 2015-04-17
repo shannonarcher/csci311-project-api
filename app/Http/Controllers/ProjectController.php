@@ -5,32 +5,41 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller {
+use App\Project;
+use App\User;
 
+class ProjectController extends Controller {
 	public function __construct()
 	{
-
+		
 	}
 
 	// Sprint 1
 	public function create() {
 	}
-	public function getAll() {}
-	public function get(App\Project $project) {}
-	public function update(App\Project $project) {}
+	public function getAll() {
+		return Project::with('users')->get();
+	}
+	public function get(Project $project) {
+		$project->load('users','tasks','createdBy');
+		return $project;
+	}
+	public function update(Project $project) {}
 
-	public function archive(App\Project $project) {}
-	public function unarchive(App\Project $project) {}
+	public function archive(Project $project) {}
+	public function unarchive(Project $project) {}
 
-	public function assignManager(App\Project $project, App\User $user) {}
-	public function assignUser(App\Project $project, App\User $user) {}
+	public function assignManager(Project $project, User $user) {}
+	public function assignUser(Project $project, User $user) {}
 
 	// Sprint 2
-	public function createTask(App\Project $project) {}
-	public function getTasks(App\Project $project) {}
+	public function createTask(Project $project) {}
+	public function getTasks(Project $project) {
+		return $project->tasks;
+	}
 
-	public function createMilestone(App\Project $project) {}
-	public function getMilestones(App\Project $project) {}
+	public function createMilestone(Project $project) {}
+	public function getMilestones(Project $project) {}
 
-	public function getComments(App\Project $project) {}
+	public function getComments(Project $project) {}
 }

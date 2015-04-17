@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use App\Task;
+
 class TaskController extends Controller {
 
 	public function __construct()
@@ -12,25 +14,25 @@ class TaskController extends Controller {
 
 	}
 
-	public function get(App\Task $task) {}
-	public function update(App\Task $task) {}
-	public function delete(App\Task $task) {}
+	public function get(Task $task) {
+		$task->load('comments', 'comments.createdBy', 'project', 'createdBy', 'parent', 'children', 'dependencies', 'resources');
+		return $task;
+	}
+	/*public function update(Task $task) {}
+	public function delete(Task $task) {}
 
-	public function approveDeletion(App\Task $task) {}
-	public function rejectDeletion(App\Task $task) {}
+	public function approveDeletion(Task $task) {}
+	public function rejectDeletion(Task $task) {}
 
-	public function approveTask(App\Task $task) {}
-	pubilc function unapproveTask(App\Task $task) {}
+	public function approveTask(Task $task) {}
+	public function unapproveTask(Task $task) {}
 
-	public function assignUser(App\Task $task, App\User $user) {}
-	public function unassignUser(App\Task $task, App\User $user) {}
+	public function assignUser(Task $task, User $user) {}
+	public function unassignUser(Task $task, User $user) {}
 
-	public function createComment(App\Task $task) {}
-	public function getComments(App\Task $task) {}
+	public function createComment(Task $task) {}
+	public function getComments(Task $task) {}
 
-	public function createRelationWithMilestone(App\Task $task, App\Milestone $milestone) {}
-	public function deleteRelationWithMilestone(App\Task $task, App\Milestone $milestone) {}
-
-	public function createDependency(App\Task $task, App\Task $dependency) {}
-	public function deleteDependency(App\Task $task, App\Task $dependency) {}
+	public function createDependency(Task $task, Task $dependency) {}
+	public function deleteDependency(Task $task, Task $dependency) {}*/
 }
