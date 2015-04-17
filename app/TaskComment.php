@@ -8,7 +8,7 @@ class TaskComment extends Model {
 	protected $fillable = ['comment'];
 	protected $hidden = [];
 
-	public function user() {
+	public function createdBy() {
 		return $this->belongsTo('App\User', 'created_by');
 	}
 

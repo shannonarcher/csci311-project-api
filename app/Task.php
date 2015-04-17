@@ -27,4 +27,20 @@ class Task extends Model {
 	public function approvedBy() {
 		return $this->belongsTo('App\User', 'approved_by');
 	}
+
+	public function createdBy() {
+		return $this->belongsTo('App\User', 'created_by');
+	}
+
+	public function parent() {
+		return $this->belongsTo('App\Task', 'parent_id');
+	}
+
+	public function dependencies() {
+		return $this->belongsToMany('App\Task', 'task_dependencies', 'dependent_id', 'independent_id');
+	}
+
+	public function resources() {
+		return $this->belongsToMany('App\User', 'task_resources', 'task_id', 'user_id');
+	}
 }

@@ -14,10 +14,14 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 		
+		DB::statement(DB::raw("SET foreign_key_checks = 0;"));
+
 		DB::table('projects')->delete();
 		DB::table('users')->delete();
 		DB::table('tasks')->delete();
 		DB::table('milestones')->delete();
+
+		DB::statement(DB::raw("SET foreign_key_checks = 0;"));
 
 		/*$this->call('UserTableSeeder');
 		$this->call('ProjectTableSeeder');

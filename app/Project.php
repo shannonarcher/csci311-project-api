@@ -9,7 +9,7 @@ class Project extends Model {
 	protected $hidden = [];
 
 	public function users() {
-		return $this->belongsToMany('App\User', 'project_users')->withPivot('is_manager');
+		return $this->belongsToMany('App\User', 'project_users')->withPivot('is_manager')->orderBy('is_manager', 'ASC');
 	}
 
 	public function managers() {

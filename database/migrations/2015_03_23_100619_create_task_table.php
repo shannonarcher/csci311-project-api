@@ -20,6 +20,7 @@ class CreateTaskTable extends Migration {
 			$table->timestamp('started_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->string('estimation_duration', 20)->default('');
 			$table->timestamp('completed_at')->nullable();
+			$table->integer('progress')->default(0);
 
 			$table->timestamp('approved_at')->nullable();			
 			$table->integer('approved_by')->unsigned()->nullable();
@@ -35,7 +36,7 @@ class CreateTaskTable extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::create('tasks_dependencies', function (Blueprint $table) {
+		Schema::create('task_dependencies', function (Blueprint $table) {
 			$table->increments('id');
 
 			$table->integer('independent_id')->unsigned();
@@ -43,6 +44,18 @@ class CreateTaskTable extends Migration {
 
 			$table->integer('dependent_id')->unsigned();
 			$table->foreign('dependent_id')->references('id')->on('tasks');
+
+			$table->timestamps();
+		});
+
+		Schema::create('task_resources', function (Blueprint $table) {
+			$table->increments('id');
+
+			$table->integer('user_id')->unsigned();
+			$table->foreign('user_id')->references('id')->on('users');
+
+			$table->integer('task_id')->unsigned();
+			$table->foreign('task_id')->references('id')->on('users');
 
 			$table->timestamps();
 		});

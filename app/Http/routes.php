@@ -1,5 +1,12 @@
 <?php
 
+Route::get('/', function () {
+	return View::make('testdata', [
+			'users' => App\User::orderBy('is_admin', 'DESC')->orderBy('name', 'ASC')->get(),
+			'projects' => App\Project::with('managers','users','tasks.resources','users.skills','tasks','tasks.comments','tasks.approvedBy','tasks.comments.createdBy','tasks.dependencies','tasks.createdBy','milestones','createdBy')->get()
+			]);
+});
+
 // Sprint 1
 /** USER ROUTES **/
 Route::post('/users', ['middleware' => ['auth', 'isAdmin'], 'uses' => 'UserController@create']);
