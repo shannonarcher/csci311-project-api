@@ -11,7 +11,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use Authenticatable, CanResetPassword;
 
 	protected $table = 'users';
-	protected $fillable = ['name', 'email', 'password'];
+	protected $fillable = ['name', 'email', 'password', 'is_admin', 'is_archived'];
 	protected $hidden = ['password', 'session_token', 'remember_token'];
 
 	public function projects() {

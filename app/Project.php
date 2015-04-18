@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model {
 
 	protected $table = 'projects';
-	protected $fillable = ['name'];
+	protected $fillable = ['name', 'created_by', 'started_at', 'expected_completed_at'];
 	protected $hidden = [];
 
 	public function users() {

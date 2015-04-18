@@ -52,7 +52,7 @@ class UserController extends Controller {
 
 	public function getAuthed() {
 		$session_token = $this->request->input('session_token');
-		$user = User::where('session_token', '=', $session_token)->first();
+		$user = User::where('session_token', '=', $session_token)->with('projects')->first();
 		return $user;
 	}
 
@@ -63,7 +63,8 @@ class UserController extends Controller {
 		if ($this->request->has("password"))
 			$user->password = Hash::make($this->request->input("password"));
 
-		$user->is_admin = $this->request->input("is_admin", $user->is_admin);
+		$user->is_admin = ($this->request->input("is_admin", $user->is_admin) == 1);
+		$user->is_archived = ($this->request->input("is_archived", $user->is_archived) == 1);
 
 		$user->save();
 
@@ -84,7 +85,7 @@ class UserController extends Controller {
 	public function login() {
 		if (Auth::validate($this->request->all())) {
 
-			$user = User::where('email', '=', $this->request->input('email'))->first();
+			$user = User::where('email', '=', $this->request->input('email'))->with('projects')->first();
 			if ($user->is_archived == 0) {
 				$user->session_token = str_random(32);
 				$user->save();
