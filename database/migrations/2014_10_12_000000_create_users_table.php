@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration {
 			$table->boolean('is_admin')->default(0);
 			$table->boolean('is_archived')->default(0);
 
+			$table->string('lang', 5)->default('en');
+
 			$table->rememberToken();
 			$table->timestamps();
 		});

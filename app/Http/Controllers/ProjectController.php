@@ -61,11 +61,13 @@ class ProjectController extends Controller {
 		$project->started_at = $this->request->input('started_at', $project->started_at);
 		$project->expected_completed_at = $this->request->input('expected_completed_at', $project->expected_completed_at);
 		$project->actual_completed_at = $this->request->input('actual_completed_at', $project->actual_completed_at);
+		if ($project->actual_completed_at == '')
+			$project->actual_completed_at = null;
 
 		$project->save();
 
 		// if users included
-		
+
 
 		return $project;
 	}

@@ -59,6 +59,7 @@ class UserController extends Controller {
 	public function update(User $user) {
 		$user->name = $this->request->input("name", $user->name);
 		$user->email = $this->request->input("email", $user->email);
+		$user->lang = $this->request->input("lang", $user->lang);
 
 		if ($this->request->has("password"))
 			$user->password = Hash::make($this->request->input("password"));
