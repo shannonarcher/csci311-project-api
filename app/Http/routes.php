@@ -33,8 +33,11 @@ Route::put('/projects/{project}', ['uses' => 'ProjectController@update']);
 Route::post('/projects/{project}/archive', ['uses' => 'ProjectController@archive']);
 Route::post('/projects/{project}/unarchive', ['uses' => 'ProjectController@unarchive']);
 
-Route::post('/projects/{project}/assignManager/{user}', ['uses' => 'ProjectController@assignManager']);
-Route::post('/projects/{project}/assign/{user}', ['uses' => 'ProjectController@assignUser']);
+Route::post('/projects/{project}/attach/{user}', ['middleware' => [], 'uses' => 'ProjectController@attachUser']);
+Route::post('/projects/{project}/detach/{user}', ['middleware' => [], 'uses' => 'ProjectController@detachUser']);
+
+Route::post('/projects/{project}/promote/{user}', ['middleware' => [], 'uses' => 'ProjectController@promoteUser']);
+Route::post('/projects/{project}/demote/{user}',  ['middleware' => [], 'uses' => 'ProjectController@demoteUser']);
 
 // Sprint 2
 Route::post('/projects/{project}/tasks', ['uses' => 'ProjectController@createTask']);

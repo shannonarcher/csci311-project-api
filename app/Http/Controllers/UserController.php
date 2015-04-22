@@ -42,7 +42,7 @@ class UserController extends Controller {
 	}
 
 	public function getAll() {
-		return User::with('projects')->get();
+		return User::with('projects', 'skills')->get();
 	}
 
 	public function get(User $user) {

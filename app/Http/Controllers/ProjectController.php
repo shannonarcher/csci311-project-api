@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 
 use App\Project;
 use App\User;
+use App\Task;
+use App\Milestone;
 
 use \DateTime;
+use \Response;
 
 class ProjectController extends Controller {
 	private $request = null;
@@ -53,7 +56,7 @@ class ProjectController extends Controller {
 		return Project::with('users')->get();
 	}
 	public function get(Project $project) {
-		$project->load('users','managers','tasks','createdBy','milestones');
+		$project->load('users','users.skills','managers','tasks','createdBy','milestones');
 		return $project;
 	}
 	public function update(Project $project) {
@@ -66,20 +69,89 @@ class ProjectController extends Controller {
 
 		$project->save();
 
-		// if users included
-
-
 		return $project;
 	}
 
 	public function archive(Project $project) {}
 	public function unarchive(Project $project) {}
 
-	public function assignManager(Project $project, User $user) {}
-	public function assignUser(Project $project, User $user) {}
+	public function attachUser(Project $project, User $user) {
+		$is_manager = $this->request->input("manager", 0);
+
+		// check if already attached
+		foreach ($project->users as $p_user) {
+			if ($p_user->id == $user->id) {
+				return Response::json([
+					'message' => "$user->name is already in $project->name's team."], 200);
+			}
+		}
+
+		$project->users()->attach($user->id);
+		return Response::json([
+			'message' => "$user->name added to $project->name's team."], 200);
+	}
+	public function detachUser(Project $project, User $user) {
+		$has_manager = false;
+		foreach ($project->users as $p_user) {
+			if ($p_user->id != $user->id && $p_user->pivot->is_manager) 
+				$has_manager = true;
+		}
+
+		if (count($project->users) < 5)
+			return Response::json([
+				'message' => "$project->name must have at least five users."], 401);
+
+		if (!$has_manager)
+			return Response::json([
+				'message' => "$project->name must have at least one manager."], 401);
+
+		$project->users()->detach($user->id);
+		return Response::json([
+			'message' => "$user->name removed from $project->name."], 200);
+	}
+
+	public function promoteUser(Project $project, User $user) {		
+		$project->users()->updateExistingPivot($user->id, ['is_manager' => true]);
+		return Response::json([
+			'message' => "$user->name promoted to manager."
+			]);
+	}
+
+	public function demoteUser(Project $project, User $user) {		
+		$has_manager = false;
+		foreach ($project->users as $p_user) {
+			if ($p_user->id != $user->id && $p_user->pivot->is_manager) 
+				$has_manager = true;
+		}
+
+		if (!$has_manager)
+			return Response::json([
+				'message' => "$project->name must have at least one manager."], 401);
+
+		$project->users()->updateExistingPivot($user->id, ['is_manager' => false]);
+		return Response::json([
+			'message' => "$user->name demoted from manager."
+			]);
+	}
 
 	// Sprint 2
-	public function createTask(Project $project) {}
+	public function createTask(Project $project) {
+		$user = User::where('session_token', '=', $this->request->input('session_token'))->first();
+
+		$task = new Task($this->request->all());
+		$task->created_by = $user->id;
+		$task->parent_id = $this->request->input("parent");
+		$project->tasks()->save($task);
+
+		// add dependencies
+		if ($this->request->input("dependencies") != null)
+			$task->dependencies()->attach(array_unique(array_values($this->request->input("dependencies"))));
+
+		$task->load('parent', 'dependencies');
+
+		return $task;
+	}
+
 	public function getTasks(Project $project) {
 		return $project->tasks;
 	}
