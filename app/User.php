@@ -19,6 +19,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	}
 
 	public function skills() {
-		return $this->hasMany('App\Skill');
+		return $this->belongsToMany('App\Skill', 'users_skills', 'user_id', 'skill_id');
+	}
+
+	public function roles() {
+		return $this->belongsToMany('App\Role', 'users_roles')->withPivot('id', 'assigned_for');
 	}
 }

@@ -9,6 +9,7 @@ use App\Project;
 use App\User;
 use App\Task;
 use App\Milestone;
+use App\Role;
 
 use \DateTime;
 use \Response;
@@ -56,7 +57,7 @@ class ProjectController extends Controller {
 		return Project::with('users')->get();
 	}
 	public function get(Project $project) {
-		$project->load('users','users.skills','managers','tasks','createdBy','milestones');
+		$project->load('users','users.skills','users.roles','managers','tasks','createdBy','milestones');
 		return $project;
 	}
 	public function update(Project $project) {
@@ -72,11 +73,11 @@ class ProjectController extends Controller {
 		return $project;
 	}
 
-	public function archive(Project $project) {}
-	public function unarchive(Project $project) {}
-
 	public function attachUser(Project $project, User $user) {
+		$actor = User::where('session_token', '=', $this->request->input('session_token'))->first();
+
 		$is_manager = $this->request->input("manager", 0);
+		$roles = $this->request->input("roles", 0);
 
 		// check if already attached
 		foreach ($project->users as $p_user) {
@@ -87,6 +88,18 @@ class ProjectController extends Controller {
 		}
 
 		$project->users()->attach($user->id);
+
+		foreach ($roles as $value) {
+			$role = Role::where('name', '=', $value)->first();
+			if ($role == null) {
+				$role = Role::create(['name'=>$value]);
+			}
+
+			$role_ids[$role->id] = ['assigned_by' => $actor->id, 'assigned_for' => $project->id];
+		}
+
+		$user->roles()->attach($role_ids);
+
 		return Response::json([
 			'message' => "$user->name added to $project->name's team."], 200);
 	}
@@ -154,6 +167,52 @@ class ProjectController extends Controller {
 
 	public function getTasks(Project $project) {
 		return $project->tasks;
+	}
+
+	public function addRoleToUser(Project $project, User $user) {
+		$actor = User::where('session_token', '=', $this->request->input('session_token'))->first();
+		$roles = $this->request->input('roles');
+
+		$role_ids = [];
+
+		foreach ($roles as $value) {
+			$role = Role::where('name', '=', $value)->first();
+			if ($role == null) {
+				$role = Role::create(['name'=>$value]);
+			}
+
+			$exists = false;
+			foreach ($user->roles as $existing) {
+				if ($existing->id == $role->id)
+					$exists = true;
+			}
+
+			if (!$exists)
+				$role_ids[$role->id] = ['assigned_by' => $actor->id, 'assigned_for' => $project->id];
+		}
+
+		$user->roles()->attach($role_ids);
+
+		return Response::json([
+			'message' => "Roles added to $user->name."], 200);
+	}
+
+	public function removeRoleFromUser(Project $project, User $user) {
+		$roles = $this->request->input('roles');
+
+		foreach ($user->roles as $role) {
+			if ($role->pivot->assigned_for == $project->id) {
+				foreach ($roles as $to_delete) {
+					if ($to_delete == $role->id) {
+						\DB::delete('delete from users_roles where id = ?', [$role->pivot->id]);
+						continue;
+					}
+				}
+			}
+		}
+
+		return Response::json([
+			'message' => "Roles removed from $user->name."]);
 	}
 
 	public function createMilestone(Project $project) {}

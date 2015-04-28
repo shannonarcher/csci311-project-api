@@ -30,6 +30,8 @@ class RouteServiceProvider extends ServiceProvider {
 		$router->model('task', 'App\Task');
 		$router->model('comment', 'App\TaskComment');
 		$router->model('milestone', 'App\Milestone');
+		$router->model('skill', 'App\Skill');
+		$router->model('role', 'App\Role');
 	}
 
 	/**

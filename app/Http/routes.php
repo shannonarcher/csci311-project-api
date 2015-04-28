@@ -23,6 +23,9 @@ Route::post('/users/logout', ['uses' => 'UserController@logout']);
 
 Route::post('/users/{user}/password/reset', ['middleware' => ['auth', 'isAdmin'], 'uses' => 'UserController@resetPassword']);
 
+Route::post('/users/{user}/skills/{skill}', ['middleware' => ['auth'], 'uses' => 'UserController@attachSkill']);
+Route::delete('/users/{user}/skills/{skill}', ['middleware' => ['auth'], 'uses' => 'UserController@detachSkill']);
+
 /** PROJECT ROUTES **/
 Route::post('/projects', ['uses' => 'ProjectController@create']);
 Route::get('/projects', ['uses' => 'ProjectController@getAll']);
@@ -38,6 +41,9 @@ Route::post('/projects/{project}/detach/{user}', ['middleware' => [], 'uses' => 
 
 Route::post('/projects/{project}/promote/{user}', ['middleware' => [], 'uses' => 'ProjectController@promoteUser']);
 Route::post('/projects/{project}/demote/{user}',  ['middleware' => [], 'uses' => 'ProjectController@demoteUser']);
+
+Route::post('/projects/{project}/addRole/{user}', ['middleware' => [], 'uses' => 'ProjectController@addRoleToUser']);
+Route::post('/projects/{project}/removeRole/{user}', ['middleware' => [], 'uses' => 'ProjectController@removeRoleFromUser']);
 
 // Sprint 2
 Route::post('/projects/{project}/tasks', ['uses' => 'ProjectController@createTask']);
@@ -84,3 +90,11 @@ Route::delete('/milestones/{milestone}', ['uses' => 'MilestoneController@delete'
 Route::get('/milestones/{milestone}/tasks', ['uses' => 'MilestoneController@getTasks']);
 
 /****/
+
+/** SKILLS ROUTES **/
+Route::get('/skills', ['uses' => 'SkillController@getAll']);
+Route::post('/skills', ['uses' => 'SkillController@create']);
+
+/** ROLES ROUTES **/
+Route::get('/roles', ['uses' => 'RoleController@getAll']);
+Route::post('/roles', ['uses' => 'RoleController@create']);

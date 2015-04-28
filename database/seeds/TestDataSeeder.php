@@ -48,6 +48,12 @@ class TestDataSeeder extends Seeder {
 			$last_names  = file($last_names_filename, FILE_IGNORE_NEW_LINES);
 			$skills = file($skills_filename, FILE_IGNORE_NEW_LINES);
 
+			// add some skills
+			for ($i = 0; $i < count($skills); $i++) {
+				Skill::create(['name' => $skills[$i]]);
+			}
+
+			//
 			for ($i = 0; $i < $num_users; $i++) {
 
 				$is_admin = (rand(0, 100) < $admin_distribution);
@@ -76,10 +82,9 @@ class TestDataSeeder extends Seeder {
 					array_push($users, $user);
 
 				$num_skills = rand(5, 20);
+				$skill_count = count(Skill::all());
 				for ($j = 0; $j < $num_skills; $j++) {
-					$user->skills()->save(new Skill([
-						'name' => $skills[rand(0, count($skills)-1)]
-						]));
+					$user->skills()->attach(rand(1, $skill_count-1));
 				}
 			}
 

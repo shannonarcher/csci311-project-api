@@ -26,18 +26,6 @@ class CreateMilestoneTable extends Migration {
 
 			$table->timestamps();
 		});
-
-		Schema::create('milestone_tasks', function (Blueprint $table) {
-			$table->increments('id');
-
-			$table->integer('task_id')->unsigned();
-			$table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
-
-			$table->integer('milestone_id')->unsigned();
-			$table->foreign('milestone_id')->references('id')->on('milestones')->onDelete('cascade');
-
-			$table->timestamps();
-		});
 	}
 
 	/**
@@ -49,7 +37,6 @@ class CreateMilestoneTable extends Migration {
 	{
 		//
 		Schema::drop('milestones');
-		Schema::drop('milestone_tasks');
 	}
 
 }

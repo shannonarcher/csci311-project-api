@@ -2,13 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Skill extends Model {
+class Role extends Model {
 
-	protected $table = 'skills';
+	protected $table = 'roles';
 	protected $fillable = ['name'];
 	protected $hidden = [];
 
 	public function users() {
-		return $this->belongsToMany('App\User', 'users_skills', 'user_id', 'skill_id');
+		return $this->belongsToMany('App\User', 'users_roles');
 	}
 }

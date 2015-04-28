@@ -11,6 +11,7 @@ use \Hash;
 use \Response;
 
 use App\User;
+use App\Skill;
 
 class UserController extends Controller {
 
@@ -42,11 +43,11 @@ class UserController extends Controller {
 	}
 
 	public function getAll() {
-		return User::with('projects', 'skills')->get();
+		return User::with('projects', 'skills', 'roles')->get();
 	}
 
 	public function get(User $user) {
-		$user->load('projects');
+		$user->load('projects', 'skills', 'roles');
 		return $user;
 	}
 
@@ -126,5 +127,18 @@ class UserController extends Controller {
 			"user" => $user,
 			"password" => $new_password
 			], 200);
+	}
+
+	public function attachSkill(User $user, Skill $skill) {
+		if (!$user->skills->contains($skill->id))
+			$user->skills()->attach($skill->id);
+		$user->load('skills');
+		return $user->skills;
+	}
+
+	public function detachSkill(User $user, Skill $skill) {
+		$user->skills()->detach($skill->id);
+		$user->load('skills');
+		return $user->skills;
 	}
 }
