@@ -166,6 +166,7 @@ class ProjectController extends Controller {
 	}
 
 	public function getTasks(Project $project) {
+		$project->load('tasks.dependencies');
 		return $project->tasks;
 	}
 
@@ -175,23 +176,25 @@ class ProjectController extends Controller {
 
 		$role_ids = [];
 
-		foreach ($roles as $value) {
-			$role = Role::where('name', '=', $value)->first();
-			if ($role == null) {
-				$role = Role::create(['name'=>$value]);
+		if (is_array($roles)) {
+			foreach ($roles as $value) {
+				$role = Role::where('name', '=', $value)->first();
+				if ($role == null) {
+					$role = Role::create(['name'=>$value]);
+				}
+
+				$exists = false;
+				foreach ($user->roles as $existing) {
+					if ($existing->id == $role->id && $existing->pivot->assigned_for == $project->id)
+						$exists = true;
+				}
+
+				if (!$exists)
+					$role_ids[$role->id] = ['assigned_by' => $actor->id, 'assigned_for' => $project->id];
 			}
 
-			$exists = false;
-			foreach ($user->roles as $existing) {
-				if ($existing->id == $role->id)
-					$exists = true;
-			}
-
-			if (!$exists)
-				$role_ids[$role->id] = ['assigned_by' => $actor->id, 'assigned_for' => $project->id];
+			$user->roles()->attach($role_ids);
 		}
-
-		$user->roles()->attach($role_ids);
 
 		return Response::json([
 			'message' => "Roles added to $user->name."], 200);
