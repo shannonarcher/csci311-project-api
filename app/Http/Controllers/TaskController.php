@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Task;
 use App\User;
+use App\TaskComment;
 
 class TaskController extends Controller {
 
@@ -53,10 +54,23 @@ class TaskController extends Controller {
 
 	public function assignUser(Task $task, User $user) {}
 	public function unassignUser(Task $task, User $user) {}
+*/
+	public function createComment(Task $task) {
+		$user = User::where('session_token', '=', $this->request->input('session_token'))->first();		
 
-	public function createComment(Task $task) {}
-	public function getComments(Task $task) {}
-
+		$comment = new TaskComment([
+			'comment' => $this->request->input('comment'),
+			'created_by' => $user->id ]);
+		$task->comments()->save($comment);
+		$task->load('comments','comments.createdBy');
+		return $task->comments;
+	}
+	
+	public function getComments(Task $task) {
+		$task->load('comments', 'comments.createdBy');
+		return $task->comments;
+	}
+/*
 	public function createDependency(Task $task, Task $dependency) {}
 	public function deleteDependency(Task $task, Task $dependency) {}*/
 }

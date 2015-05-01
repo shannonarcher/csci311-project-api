@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Milestone extends Model {
 
 	protected $table = 'milestones';
-	protected $fillable = ['title', 'completed_at'];
+	protected $fillable = ['title', 'completed_at', 'created_by'];
 	protected $hidden = [];
 
 	public function user() {

@@ -218,8 +218,22 @@ class ProjectController extends Controller {
 			'message' => "Roles removed from $user->name."]);
 	}
 
-	public function createMilestone(Project $project) {}
-	public function getMilestones(Project $project) {}
+	public function createMilestone(Project $project) {
+		$user = User::where('session_token', '=', $this->request->input('session_token'))->first();
+		$milestone = new Milestone([
+			'created_by' => $user->id,
+			'title' => $this->request->input('title'),
+			'completed_at' => new DateTime('@'.strtotime($this->request->input('completed_at')))
+		]);
+
+		$project->milestones()->save($milestone);
+
+		return $milestone;
+	}
+
+	public function getMilestones(Project $project) {
+		return $project->milestones;
+	}
 
 	public function getComments(Project $project) {}
 }

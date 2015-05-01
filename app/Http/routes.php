@@ -65,13 +65,10 @@ Route::post('/tasks/{task}/delete/reject', ['uses' => 'TaskController@rejectDele
 Route::post('/tasks/{task}/approve', ['uses' => 'TaskController@approveTask']);
 
 Route::post('/tasks/{task}/assign/{user}', ['uses' => 'TaskController@assignUser']);
-
+*/
 Route::post('/tasks/{task}/comments', ['uses' => 'TaskController@createComment']);
 Route::get('/tasks/{task}/comments', ['uses' => 'TaskController@getComments']);
-
-Route::post('/tasks/{task}/relates-with/{milestone}', ['uses' => 'TaskController@createRelationWithMilestone']);
-Route::delete('/tasks/{task}/relates-with/{milestone}', ['uses' => 'TaskController@deleteRelationWithMilestone']);
-
+/*
 Route::post('/tasks/{task}/depends-on/{task}', ['uses' => 'TaskController@createDependency']);
 Route::delete('/tasks/{task}/depends-on/{task}', ['uses' => 'TaskController@deleteDependency']);
 
@@ -84,9 +81,9 @@ Route::post('/comments/{comment}/unarchive', ['uses' => 'TaskCommentController@a
 
 /** MILESTONE ROUTES **//*
 Route::get('/milestones/{milestone}', ['uses' => 'MilestoneController@get']);
-Route::put('/milestones/{milestone}', ['uses' => 'MilestoneController@update']);
+Route::put('/milestones/{milestone}', ['uses' => 'MilestoneController@update']);*/
 Route::delete('/milestones/{milestone}', ['uses' => 'MilestoneController@delete']);
-
+/*
 Route::get('/milestones/{milestone}/tasks', ['uses' => 'MilestoneController@getTasks']);
 
 /****/

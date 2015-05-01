@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaskComment extends Model {
 
 	protected $table = 'task_comments';
-	protected $fillable = ['comment'];
+	protected $fillable = ['comment', 'created_by'];
 	protected $hidden = [];
 
 	public function createdBy() {

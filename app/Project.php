@@ -17,7 +17,7 @@ class Project extends Model {
 	}
 
 	public function tasks() {
-		return $this->hasMany('App\Task')->orderBy('updated_at', 'DESC');
+		return $this->hasMany('App\Task')->orderBy('started_at', 'DESC');
 	}
 
 	public function comments() {
