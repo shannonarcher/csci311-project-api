@@ -57,7 +57,7 @@ class ProjectController extends Controller {
 		return Project::with('users')->get();
 	}
 	public function get(Project $project) {
-		$project->load('users','users.skills','users.roles','managers','tasks','createdBy','milestones');
+		$project->load('users','users.skills','users.roles','managers','users','tasks','createdBy','milestones');
 		return $project;
 	}
 	public function update(Project $project) {
@@ -154,6 +154,19 @@ class ProjectController extends Controller {
 		$task = new Task($this->request->all());
 		$task->created_by = $user->id;
 		$task->parent_id = $this->request->input("parent");
+
+		if ($user->is_admin) {
+			$task->approved_at = new DateTime('now');
+			$task->approved_by = $user->id;
+		} else {
+			foreach ($project->managers as $key => $manager) {
+				if ($manager->id == $user->id) {
+					$task->approved_at = new DateTime('now');
+					$task->approved_by = $user->id;
+				}
+			}
+		}
+
 		$project->tasks()->save($task);
 
 		// add dependencies
