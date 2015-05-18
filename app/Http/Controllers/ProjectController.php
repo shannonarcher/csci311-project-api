@@ -10,6 +10,7 @@ use App\User;
 use App\Task;
 use App\Milestone;
 use App\Role;
+use App\FunctionPoint;
 
 use \DateTime;
 use \Response;
@@ -57,7 +58,7 @@ class ProjectController extends Controller {
 		return Project::with('users')->get();
 	}
 	public function get(Project $project) {
-		$project->load('users','users.skills','users.roles','managers','users','tasks','createdBy','milestones');
+		$project->load('users','users.skills','users.roles','managers','users','tasks','createdBy','milestones','functionPoints');
 		return $project;
 	}
 	public function update(Project $project) {
@@ -249,4 +250,51 @@ class ProjectController extends Controller {
 	}
 
 	public function getComments(Project $project) {}
+
+	public function saveFunctionPoints(Project $project) {
+		$functionPoint = $project->functionPoints;
+
+		if ($functionPoint == null) {
+			$functionPoint = new FunctionPoint();
+		}
+
+		$functionPoint->low_ilf = $this->request->input('low_ilf');
+		$functionPoint->med_ilf = $this->request->input('med_ilf');
+		$functionPoint->hi_ilf = $this->request->input('hi_ilf');
+
+		$functionPoint->low_eif = $this->request->input('low_eif');
+		$functionPoint->med_eif = $this->request->input('med_eif');
+		$functionPoint->hi_eif = $this->request->input('hi_eif');
+
+		$functionPoint->low_ei = $this->request->input('low_ei');
+		$functionPoint->med_ei = $this->request->input('med_ei');
+		$functionPoint->hi_ei = $this->request->input('hi_ei');
+
+		$functionPoint->low_eo = $this->request->input('low_eo');
+		$functionPoint->med_eo = $this->request->input('med_eo');
+		$functionPoint->hi_eo = $this->request->input('hi_eo');
+
+		$functionPoint->low_eq = $this->request->input('low_eq');
+		$functionPoint->med_eq = $this->request->input('med_eq');
+		$functionPoint->hi_eq = $this->request->input('hi_eq');
+
+		$functionPoint->gsc_1 = $this->request->input('gsc_1');
+		$functionPoint->gsc_2 = $this->request->input('gsc_2');
+		$functionPoint->gsc_3 = $this->request->input('gsc_3');
+		$functionPoint->gsc_4 = $this->request->input('gsc_4');
+		$functionPoint->gsc_5 = $this->request->input('gsc_5');
+		$functionPoint->gsc_6 = $this->request->input('gsc_6');
+		$functionPoint->gsc_7 = $this->request->input('gsc_7');
+		$functionPoint->gsc_8 = $this->request->input('gsc_8');
+		$functionPoint->gsc_9 = $this->request->input('gsc_9');
+		$functionPoint->gsc_10 = $this->request->input('gsc_10');
+		$functionPoint->gsc_11 = $this->request->input('gsc_11');
+		$functionPoint->gsc_12 = $this->request->input('gsc_12');
+		$functionPoint->gsc_13 = $this->request->input('gsc_13');
+		$functionPoint->gsc_14 = $this->request->input('gsc_14');
+
+		$functionPoint->save();
+
+		return $this->get($project);
+	}
 }

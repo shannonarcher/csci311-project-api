@@ -31,4 +31,8 @@ class Project extends Model {
 	public function createdBy() {
 		return $this->hasOne('App\User', 'id', 'created_by');
 	}
+
+	public function functionPoints() {
+		return $this->hasOne('App\FunctionPoint', 'project_id', 'id');
+	}
 }

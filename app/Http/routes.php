@@ -54,6 +54,9 @@ Route::get('/projects/{project}/milestones', ['uses' => 'ProjectController@getMi
 
 Route::get('/projects/{project}/comments', ['uses' => 'ProjectController@getComments']);
 
+// Sprint 3
+Route::post('/projects/{project}/functionPoints', ['uses' => 'ProjectController@saveFunctionPoints']);
+
 /** TASK ROUTES **/
 Route::get('/tasks/{task}', ['uses' => 'TaskController@get']);
 Route::put('/tasks/{task}', ['uses' => 'TaskController@update']);
