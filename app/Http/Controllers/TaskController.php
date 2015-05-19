@@ -35,10 +35,12 @@ class TaskController extends Controller {
 		$task->parent_id = $this->request->input("parent");
 
 		if ($this->request->input('is_approved')) {
+
 			if ($task->approved_at == null) {	
 				$task->approved_at = new DateTime('now');
 				$task->approved_by = $user->id;
 			} 
+			
 		} else {
 			$task->approved_at = null;
 			$task->approved_by = null;

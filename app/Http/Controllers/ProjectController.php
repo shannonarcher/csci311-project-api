@@ -256,6 +256,7 @@ class ProjectController extends Controller {
 
 		if ($functionPoint == null) {
 			$functionPoint = new FunctionPoint();
+			$project->functionPoints()->save($functionPoint);
 		}
 
 		$functionPoint->low_ilf = $this->request->input('low_ilf');
