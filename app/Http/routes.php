@@ -56,6 +56,7 @@ Route::get('/projects/{project}/comments', ['uses' => 'ProjectController@getComm
 
 // Sprint 3
 Route::post('/projects/{project}/functionPoints', ['uses' => 'ProjectController@saveFunctionPoints']);
+Route::post('/projects/{project}/cocomo', ['uses' => 'ProjectController@saveCocomo']);
 
 /** TASK ROUTES **/
 Route::get('/tasks/{task}', ['uses' => 'TaskController@get']);
@@ -98,3 +99,6 @@ Route::post('/skills', ['uses' => 'SkillController@create']);
 /** ROLES ROUTES **/
 Route::get('/roles', ['uses' => 'RoleController@getAll']);
 Route::post('/roles', ['uses' => 'RoleController@create']);
+
+/** COCOMO ROUTES **/
+Route::get('/cocomo/types', ['uses' => 'CocomoController@getSystemTypes']);

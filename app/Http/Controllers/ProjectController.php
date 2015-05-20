@@ -11,6 +11,7 @@ use App\Task;
 use App\Milestone;
 use App\Role;
 use App\FunctionPoint;
+use App\CocomoII;
 
 use \DateTime;
 use \Response;
@@ -58,7 +59,7 @@ class ProjectController extends Controller {
 		return Project::with('users')->get();
 	}
 	public function get(Project $project) {
-		$project->load('users','users.skills','users.roles','managers','users','tasks','createdBy','milestones','functionPoints');
+		$project->load('users','users.skills','users.roles','managers','users','tasks','createdBy','milestones','functionPoints','cocomoi','cocomoii');
 		return $project;
 	}
 	public function update(Project $project) {
@@ -297,5 +298,34 @@ class ProjectController extends Controller {
 		$functionPoint->save();
 
 		return $this->get($project);
+	}
+
+	public function saveCocomo(Project $project) {
+		$project->kloc = $this->request->input('kloc');
+		$project->system_type_id = $this->request->input('system_type');
+
+		$cocomoII = $project->cocomoII;
+
+		if ($cocomoII == null) {
+			$cocomoII = new CocomoII();
+			$project->cocomoII()->save($cocomoII);
+		}
+
+		$cocomoII->PREC = $this->request->input('PREC');
+		$cocomoII->FLEX = $this->request->input('FLEX');
+		$cocomoII->RESL = $this->request->input('RESL');
+		$cocomoII->TEAM = $this->request->input('TEAM');
+		$cocomoII->PMAT = $this->request->input('PMAT');
+
+		$cocomoII->RCPX = $this->request->input('RCPX');
+		$cocomoII->RUSE = $this->request->input('RUSE');
+		$cocomoII->PDIF = $this->request->input('PDIF');
+		$cocomoII->PERS = $this->request->input('PERS');
+		$cocomoII->PREX = $this->request->input('PREX');
+		$cocomoII->FCIL = $this->request->input('FCIL');
+		$cocomoII->SCED = $this->request->input('SCED');
+
+		$cocomoII->save();
+		$project->save();
 	}
 }

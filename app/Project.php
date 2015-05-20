@@ -35,4 +35,12 @@ class Project extends Model {
 	public function functionPoints() {
 		return $this->hasOne('App\FunctionPoint', 'project_id', 'id');
 	}
+
+	public function cocomoi() {
+		return $this->hasOne('App\SystemType', 'id', 'system_type_id');
+	}
+
+	public function cocomoii() {
+		return $this->hasOne('App\CocomoII', 'project_id', 'id');
+	}
 }
