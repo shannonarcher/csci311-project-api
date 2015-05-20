@@ -25,7 +25,7 @@ class Project extends Model {
 	}
 
 	public function milestones() {
-		return $this->hasMany('App\Milestone');
+		return $this->hasMany('App\Milestone')->orderBy('completed_at', 'DESC');
 	}
 
 	public function createdBy() {
