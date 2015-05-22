@@ -56,7 +56,7 @@ Route::get('/projects/{project}/comments', ['uses' => 'ProjectController@getComm
 
 // Sprint 3
 Route::post('/projects/{project}/functionPoints', ['uses' => 'ProjectController@saveFunctionPoints']);
-Route::post('/projects/{project}/cocomo', ['uses' => 'ProjectController@saveCocomo']);
+Route::post('/projects/{project}/cocomo', ['uses' => 'ProjectController@saveCocomo']);       
 
 /** TASK ROUTES **/
 Route::get('/tasks/{task}', ['uses' => 'TaskController@get']);

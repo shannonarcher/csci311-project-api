@@ -274,7 +274,7 @@ class ProjectController extends Controller {
 
 		$functionPoint->low_eo = $this->request->input('low_eo');
 		$functionPoint->med_eo = $this->request->input('med_eo');
-		$functionPoint->hi_eo = $this->request->input('hi_eo');
+		$functionPoint->hi_eo = $this->request->input('hi_eo'); 
 
 		$functionPoint->low_eq = $this->request->input('low_eq');
 		$functionPoint->med_eq = $this->request->input('med_eq');
