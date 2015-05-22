@@ -10,6 +10,7 @@ use App\User;
 use App\TaskComment;
 
 use \DateTime;
+use \Response;
 
 class TaskController extends Controller {
 
@@ -52,8 +53,8 @@ class TaskController extends Controller {
 		$task->save();
 
 		// add dependencies
+		$task->dependencies()->detach();
 		if ($this->request->input("dependencies") != null) {
-			$task->dependencies()->detach();
 			$task->dependencies()->attach(array_unique(array_values($this->request->input("dependencies"))));
 		}
 
@@ -61,18 +62,22 @@ class TaskController extends Controller {
 
 		return $task;
 	}
+
 	/*
 	public function delete(Task $task) {}
+	*/
 
-	public function approveDeletion(Task $task) {}
-	public function rejectDeletion(Task $task) {}
+	public function assignUser(Task $task, User $user) {
+		if (!$task->resources->contains($user->id))
+			$task->resources()->attach($user->id);	
+		return Response::json(['message' => "Assigned to task."], 200);
+	}
 
-	public function approveTask(Task $task) {}
-	public function unapproveTask(Task $task) {}
+	public function unassignUser(Task $task, User $user) {
+		$task->resources()->detach($user->id);
+		return Response::json(['message' => "Unassigned from task."], 200);
+	}
 
-	public function assignUser(Task $task, User $user) {}
-	public function unassignUser(Task $task, User $user) {}
-*/
 	public function createComment(Task $task) {
 		$user = User::where('session_token', '=', $this->request->input('session_token'))->first();		
 

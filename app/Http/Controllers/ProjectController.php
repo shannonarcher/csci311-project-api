@@ -14,6 +14,7 @@ use App\FunctionPoint;
 use App\CocomoII;
 
 use \DateTime;
+use \DateInterval;
 use \Response;
 
 class ProjectController extends Controller {
@@ -59,8 +60,12 @@ class ProjectController extends Controller {
 		return Project::with('users')->get();
 	}
 	public function get(Project $project) {
-		$project->load('users','users.skills','users.roles','managers','users','tasks','createdBy','milestones','functionPoints','cocomoi','cocomoii');
+		$project->load('users','users.skills','users.roles','managers','tasks','createdBy','milestones','functionPoints','cocomoi','cocomoii');
 		return $project;
+	}
+	public function getUsers(Project $project) {
+		$project->load('users', 'users.skills', 'users.roles');
+		return $project->users;
 	}
 	public function update(Project $project) {
 		$project->name = $this->request->input('name', $project->name);
@@ -327,5 +332,46 @@ class ProjectController extends Controller {
 
 		$cocomoII->save();
 		$project->save();
+	}
+
+	public function getNotifications(Project $project) {
+		$project->load('tasks', 'tasks.resources');
+		$tasks = $project->tasks;
+		$notifications = [];
+
+		$limit = $this->request->input('limit', 100);
+
+		// find the unapproved, unassigned, overdue tasks
+		foreach ($tasks as $task) {
+			if ($task->approved_at == NULL) {
+				$notifications[] = [
+					"notification" => "unapproved_task",
+					"task" => $task
+				];
+				$limit--;
+			} else if (count($task->resources) <= 0) {
+				$notifications[] = [
+					"notification" => "unassigned_task",
+					"task" => $task
+				];
+				$limit--;
+			} else {
+				$overdue = new DateTime($task->started_at);
+				$overdue->add(new DateInterval('PT'.$task->estimation_duration.'S'));
+
+				if ($overdue < new DateTime('now') && $task->progress < 0) {
+					$notifications[] = [
+						"notification" => "overdue_task",
+						"task" => $task
+					];
+					$limit--;
+				}
+			}
+
+			if ($limit <= 0)
+				break;
+		}
+
+		return $notifications;
 	}
 }

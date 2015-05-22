@@ -56,7 +56,12 @@ Route::get('/projects/{project}/comments', ['uses' => 'ProjectController@getComm
 
 // Sprint 3
 Route::post('/projects/{project}/functionPoints', ['uses' => 'ProjectController@saveFunctionPoints']);
-Route::post('/projects/{project}/cocomo', ['uses' => 'ProjectController@saveCocomo']);       
+Route::post('/projects/{project}/cocomo', ['uses' => 'ProjectController@saveCocomo']);     
+
+// Sprint 4
+Route::get('/projects/{project}/notifications', ['uses' => 'ProjectController@getNotifications']);
+
+Route::get('/projects/{project}/users', ['uses' => 'ProjectController@getUsers']);
 
 /** TASK ROUTES **/
 Route::get('/tasks/{task}', ['uses' => 'TaskController@get']);
@@ -65,16 +70,13 @@ Route::put('/tasks/{task}', ['uses' => 'TaskController@update']);
 
 Route::post('/tasks/{task}/delete/approve', ['uses' => 'TaskController@approveDeletion']);
 Route::post('/tasks/{task}/delete/reject', ['uses' => 'TaskController@rejectDeletion']);
-
-Route::post('/tasks/{task}/approve', ['uses' => 'TaskController@approveTask']);
-
-Route::post('/tasks/{task}/assign/{user}', ['uses' => 'TaskController@assignUser']);
 */
+Route::post('/tasks/{task}/assign/{user}', ['uses' => 'TaskController@assignUser']);
+Route::post('/tasks/{task}/unassign/{user}', ['uses' => 'TaskController@unassignUser']);
+
 Route::post('/tasks/{task}/comments', ['uses' => 'TaskController@createComment']);
 Route::get('/tasks/{task}/comments', ['uses' => 'TaskController@getComments']);
 /*
-Route::post('/tasks/{task}/depends-on/{task}', ['uses' => 'TaskController@createDependency']);
-Route::delete('/tasks/{task}/depends-on/{task}', ['uses' => 'TaskController@deleteDependency']);
 
 /** TASK COMMENT ROUTES **//*
 Route::get('/comments/{comment}', ['uses' => 'TaskCommentController@get']);
