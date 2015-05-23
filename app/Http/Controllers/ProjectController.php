@@ -117,7 +117,7 @@ class ProjectController extends Controller {
 				$has_manager = true;
 		}
 
-		if (count($project->users) < 5)
+		if (count($project->users) == 5)
 			return Response::json([
 				'message' => "$project->name must have at least five users."], 401);
 

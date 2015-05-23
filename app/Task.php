@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model {
 
 	protected $table = 'tasks';
-	protected $fillable = ['title', 'description', 'started_at', 'estimation_duration', 'approved_by', 'approved_at', 'priority'];
+	protected $fillable = ['title', 'description', 'started_at', 'optimistic_duration', 'estimation_duration', 'pessimistic_duration', 'approved_by', 'approved_at', 'priority'];
 	protected $hidden = [];
 
 	public function comments() {

@@ -32,7 +32,11 @@ class TaskController extends Controller {
 		$task->title = $this->request->input("title");
 		$task->description = $this->request->input("description");
 		$task->started_at = $this->request->input("started_at");
+		
+		$task->optimistic_duration = $this->request->input("optimistic_duration");
 		$task->estimation_duration = $this->request->input("estimation_duration");
+		$task->pessimistic_duration = $this->request->input("pessimistic_duration");
+
 		$task->priority = $this->request->input("priority");
 		
 		if ($this->request->input("parent") != $task->id) {
