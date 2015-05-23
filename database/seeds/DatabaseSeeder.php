@@ -16,23 +16,22 @@ class DatabaseSeeder extends Seeder {
 		
 		DB::statement(DB::raw("SET foreign_key_checks = 0;"));
 
-		/*DB::table('projects')->truncate();
+		DB::table('projects')->truncate();
 		DB::table('users')->truncate();
 		DB::table('tasks')->truncate();
 		DB::table('milestones')->truncate();
-		DB::table('skills')->truncate();*/
+		DB::table('skills')->truncate();
 
 		DB::table('system_types')->truncate();
 
 		DB::statement(DB::raw("SET foreign_key_checks = 1;"));
 
-		// $this->call('UserTableSeeder');
+		$this->call('UserTableSeeder');
 		/*$this->call('ProjectTableSeeder');
 		$this->call('TaskTableSeeder');
 		$this->call('MilestoneTableSeeder');*/
 
-		//$this->call('TestDataSeeder');
-
+		$this->call('TestDataSeeder');
 		$this->call('COCOMO1Seeder');
 	}
 
