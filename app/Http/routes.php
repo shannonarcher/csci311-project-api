@@ -63,6 +63,9 @@ Route::get('/projects/{project}/notifications', ['uses' => 'ProjectController@ge
 
 Route::get('/projects/{project}/users', ['uses' => 'ProjectController@getUsers']);
 
+Route::get('/projects/{project}/archive', ['uses' => "ProjectController@archive"]);
+Route::get('/projects/{project}/unarchive', ['uses' => "ProjectController@unarchive"]);
+
 /** TASK ROUTES **/
 Route::get('/tasks/{task}', ['uses' => 'TaskController@get']);
 Route::put('/tasks/{task}', ['uses' => 'TaskController@update']);

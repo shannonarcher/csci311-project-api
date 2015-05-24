@@ -195,7 +195,9 @@ class TestDataSeeder extends Seeder {
 													 $sentences[rand(0, count($sentences)-1)] . ' ' .
 													 $sentences[rand(0, count($sentences)-1)],  
 									'started_at' => new DateTime('@'.$t_start), 
+									'optimistic_duration' => rand(1, $t_durat), 
 									'estimation_duration' => $t_durat, 
+									'pessimistic_duration' => $t_durat + rand(1, $t_durat), 
 									'approved_by' => $project_managers[rand(0, count($project_managers)-1)]->id, 
 									'approved_at' => new DateTime('now'),
 									'created_by' => $project_users[rand(0, count($project_users)-1)]->id,
