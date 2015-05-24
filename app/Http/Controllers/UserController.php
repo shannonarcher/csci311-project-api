@@ -24,6 +24,11 @@ class UserController extends Controller {
 	public function create() {
 		$password = str_random(8);
 
+		if (strlen(trim($this->request->input("name"))) <= 0 || 
+			strlen(trim($this->request->input("email"))) <= 0)
+			return Response::json([
+				"message" => "Email or name cannot be blank"], 400);
+
 		$user = User::where('email', '=', $this->request->input('email', ''))->first();
 		if ($user != null)
 			return Response::json([
@@ -130,15 +135,29 @@ class UserController extends Controller {
 	}
 
 	public function attachSkill(User $user, Skill $skill) {
-		if (!$user->skills->contains($skill->id))
-			$user->skills()->attach($skill->id);
-		$user->load('skills');
-		return $user->skills;
+		$auth = User::where('session_token', '=', $this->request->input('session_token'))->first();
+
+		if ($auth != null && ($auth->is_admin || $auth->id == $user->id)) {
+			if (!$user->skills->contains($skill->id))
+				$user->skills()->attach($skill->id);
+			$user->load('skills');
+			return $user->skills;
+		} else {
+			return Response::json([
+				'message' => "$auth->name must be this user or an administrator."], 401);
+		}
 	}
 
 	public function detachSkill(User $user, Skill $skill) {
-		$user->skills()->detach($skill->id);
-		$user->load('skills');
-		return $user->skills;
+		$auth = User::where('session_token', '=', $this->request->input('session_token'))->first();
+
+		if ($auth != null && ($auth->is_admin || $auth->id == $user->id)) {
+			$user->skills()->detach($skill->id);
+			$user->load('skills');
+			return $user->skills;
+		} else {
+			return Response::json([
+				'message' => "$auth->name must be this user or an administrator."], 401);
+		}
 	}
 }

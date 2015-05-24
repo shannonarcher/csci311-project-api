@@ -28,32 +28,38 @@ class ProjectController extends Controller {
 	// Sprint 1
 	public function create() {
 		$user = User::where('session_token', '=', $this->request->input('session_token'))->first();
-		$managers = $this->request->input('managers');
 
-		if (count($managers) > 0) {
+		if ($user->is_admin) {
+			$managers = $this->request->input('managers');
 
-			$project = new Project([
-					"name" => $this->request->input('name'),
-					"started_at" => new DateTime($this->request->input('started_at')),
-					"expected_completed_at" => new DateTime($this->request->input('expected_completed_at')),
-					"created_by" => $user->id
-				]);
+			if (count($managers) > 0) {
 
-			$project->save();
+				$project = new Project([
+						"name" => $this->request->input('name'),
+						"started_at" => new DateTime($this->request->input('started_at')),
+						"expected_completed_at" => new DateTime($this->request->input('expected_completed_at')),
+						"created_by" => $user->id
+					]);
 
-			// clean managers
-			$attachments = [];
-			foreach ($managers as $key => $value) {
-				$attachments[$value] = ['is_manager' => true];
+				$project->save();
+
+				// clean managers
+				$attachments = [];
+				foreach ($managers as $key => $value) {
+					$attachments[$value] = ['is_manager' => true];
+				}
+
+				// assign managers
+				$project->managers()->attach($attachments);
+
+				return $project;
+			} else {
+				return Response::json([
+					'message' => 'Project requires at least one manager.'], 400);
 			}
-
-			// assign managers
-			$project->managers()->attach($attachments);
-
-			return $project;
 		} else {
 			return Response::json([
-				'message' => 'Project requires at least one manager.'], 400);
+					'message' => "$user->name is not an administrator."], 401);
 		}
 	}
 	public function getAll() {
@@ -131,10 +137,17 @@ class ProjectController extends Controller {
 	}
 
 	public function promoteUser(Project $project, User $user) {		
-		$project->users()->updateExistingPivot($user->id, ['is_manager' => true]);
-		return Response::json([
-			'message' => "$user->name promoted to manager."
-			]);
+		$auth = User::where('session_token', '=', $this->request->input('session_token'))->first();
+
+		if ($auth != null && ($auth->is_admin || $project->managers->contains($auth->id))) {
+			$project->users()->updateExistingPivot($user->id, ['is_manager' => true]);
+			return Response::json([
+				'message' => "$user->name promoted to manager."
+				]);
+		} else {
+			return Response::json([
+				'message' => "$auth->name must be manager of project or an administrator."], 401);
+		}
 	}
 
 	public function demoteUser(Project $project, User $user) {		
@@ -148,10 +161,18 @@ class ProjectController extends Controller {
 			return Response::json([
 				'message' => "$project->name must have at least one manager."], 401);
 
-		$project->users()->updateExistingPivot($user->id, ['is_manager' => false]);
-		return Response::json([
-			'message' => "$user->name demoted from manager."
-			]);
+
+		$auth = User::where('session_token', '=', $this->request->input('session_token'))->first();
+
+		if ($auth != null && ($auth->is_admin || $project->managers->contains($auth->id))) {			
+			$project->users()->updateExistingPivot($user->id, ['is_manager' => false]);
+			return Response::json([
+				'message' => "$user->name demoted from manager."
+				]);
+		} else {
+			return Response::json([
+				'message' => "$auth->name must be manager of project or administrator."], 401);
+		}
 	}
 
 	// Sprint 2

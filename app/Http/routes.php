@@ -76,6 +76,8 @@ Route::post('/tasks/{task}/unassign/{user}', ['uses' => 'TaskController@unassign
 
 Route::post('/tasks/{task}/comments', ['uses' => 'TaskController@createComment']);
 Route::get('/tasks/{task}/comments', ['uses' => 'TaskController@getComments']);
+
+Route::post('/tasks/{task}/complete', ['uses' => 'TaskController@completeTask']);
 /*
 
 /** TASK COMMENT ROUTES **//*
