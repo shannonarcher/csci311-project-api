@@ -39,7 +39,7 @@ class UserController extends Controller {
 			"email" => $this->request->input("email"),
 			"password" => Hash::make($password),
 			"is_admin" => $this->request->input("is_admin"),
-			"is_archived" => $this->request->input("is_admin")
+			"is_archived" => $this->request->input("is_archived")
 		]);
 		$user->save();
 
