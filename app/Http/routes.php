@@ -6,6 +6,9 @@
 			'projects' => App\Project::with('managers','users','tasks.resources','users.skills','tasks','tasks.comments','tasks.approvedBy','tasks.comments.createdBy','tasks.dependencies','tasks.createdBy','milestones','createdBy')->get()
 			]);
 });*/
+Route::get('/', function () {
+	return redirect(getenv('APP_SITE'));
+});
 
 // Sprint 1
 /** USER ROUTES **/
