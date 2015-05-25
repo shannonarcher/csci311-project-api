@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder {
 		
 		DB::statement(DB::raw("SET foreign_key_checks = 0;"));
 
-		DB::table('cocomoii')->truncate();
+		DB::table('cocomoII')->truncate();
 		DB::table('function_points')->truncate();
 		DB::table('milestones')->truncate();
 		DB::table('projects')->truncate();
