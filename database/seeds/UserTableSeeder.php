@@ -20,6 +20,12 @@ class UserTableSeeder extends Seeder {
 			'password' => Hash::make("admin"),
 			'is_admin' => 1
 		]);
+		$jane = User::create([
+			'name' => 'Jennifer Citizen',
+			'email' => 'j@c',
+			'password' => Hash::make("aoeuhtns"),
+			'is_admin' => 1
+		]);
 	}
 
 }

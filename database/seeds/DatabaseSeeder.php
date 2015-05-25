@@ -16,13 +16,21 @@ class DatabaseSeeder extends Seeder {
 		
 		DB::statement(DB::raw("SET foreign_key_checks = 0;"));
 
-		DB::table('projects')->truncate();
-		DB::table('users')->truncate();
-		DB::table('tasks')->truncate();
+		DB::table('cocomoii')->truncate();
+		DB::table('function_points')->truncate();
 		DB::table('milestones')->truncate();
+		DB::table('projects')->truncate();
+		DB::table('project_users')->truncate();
+		DB::table('roles')->truncate();
 		DB::table('skills')->truncate();
-
 		DB::table('system_types')->truncate();
+		DB::table('tasks')->truncate();
+		DB::table('task_comments')->truncate();
+		DB::table('task_dependencies')->truncate();
+		DB::table('task_resources')->truncate();
+		DB::table('users')->truncate();
+		DB::table('users_roles')->truncate();
+		DB::table('users_skills')->truncate();
 
 		DB::statement(DB::raw("SET foreign_key_checks = 1;"));
 

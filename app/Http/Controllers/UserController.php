@@ -90,7 +90,9 @@ class UserController extends Controller {
 	}
 
 	public function login() {
-		if (Auth::validate($this->request->all())) {
+		$user = User::where('email', '=', $this->request->input('email'))->first();
+
+		if (Auth::validate(["email" => $this->request->input('email'), "password" => $this->request->input('password')])) {
 
 			$user = User::where('email', '=', $this->request->input('email'))->with('projects')->first();
 			if ($user->is_archived == 0) {
@@ -107,7 +109,7 @@ class UserController extends Controller {
 
 		} else {
 			return Response::json([
-				"message" => "Invalid Credentials"], 401);
+				"message" => "Invalid Credentials."], 401);
 		}
 	}
 

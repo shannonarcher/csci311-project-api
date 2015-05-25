@@ -244,7 +244,7 @@ class ProjectController extends Controller {
 	}
 
 	public function getTasks(Project $project) {
-		$project->load('tasks.dependencies');
+		$project->load('tasks.dependencies', 'tasks.resources');
 		return $project->tasks;
 	}
 
@@ -310,6 +310,14 @@ class ProjectController extends Controller {
 
 	public function createMilestone(Project $project) {
 		if ($project->archived_at == null) {
+
+			if (strlen(trim($this->request->input('title'))) <= 0)
+				return Response::json([
+					'message' => "Title cannot be empty."], 400);
+			if (strtotime($this->request->input('completed_at')) == null)
+				return Response::json([
+					'message' => "Completed at must be properly formatted."], 400);
+
 			$user = User::where('session_token', '=', $this->request->input('session_token'))->first();
 			$milestone = new Milestone([
 				'created_by' => $user->id,

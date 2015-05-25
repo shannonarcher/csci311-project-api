@@ -29,7 +29,7 @@ class TestDataSeeder extends Seeder {
 
 			$admin_distribution = 2;
 
-			$num_users = 10 * 20;
+			$num_users = 50;
 			$num_projects = 5;
 			$max_num_milestones = 6;
 			$min_num_tasks = 2;
@@ -227,14 +227,17 @@ class TestDataSeeder extends Seeder {
 					$t_range = $t_durat;
 					for ($h = 0; $h < $num_subtasks; $h++) {
 						try {
+							$st_durat = rand(2, 10) * 86400;
 							$task = new Task([
 								'title' => $sentences[rand(0, count($sentences)-1)], 
 								'description' => $sentences[rand(0, count($sentences)-1)] . ' ' . 
 												 $sentences[rand(0, count($sentences)-1)] . ' ' .
 												 $sentences[rand(0, count($sentences)-1)] . ' ' .
 												 $sentences[rand(0, count($sentences)-1)],  
-								'started_at' => new DateTime('@'.($t_start + rand(0, $t_range))), 
-								'estimation_duration' => rand(2, 10) * 86400, 
+								'started_at' => new DateTime('@'.($t_start + rand(0, $t_range))),  
+								'optimistic_duration' => rand(1, $st_durat), 
+								'estimation_duration' => $st_durat, 
+								'pessimistic_duration' => $st_durat + rand(1, $st_durat), 
 								'approved_by' => $project_managers[rand(0, count($project_managers)-1)]->id, 
 								'approved_at' => new DateTime('now'),
 								'created_by' => $project_users[rand(0, count($project_users)-1)]->id,
@@ -278,13 +281,10 @@ class TestDataSeeder extends Seeder {
 				]);
 
 			$task->comments()->save($comment);
-		}
+		}		
 
 		// assign a couple project users to task
-		$num_resources = rand(1, count($project_users)-1);
-		for ($i = 0; $i < $num_resources; $i++) {
-			$task->resources()->attach($project_users[rand(0, count($project_users)-1)]);
-		}
+		$task->resources()->attach($project_users[rand(0, count($project_users)-1)]);
 	}
 
 }
