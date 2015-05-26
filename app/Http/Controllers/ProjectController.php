@@ -209,7 +209,10 @@ class ProjectController extends Controller {
 	// Sprint 2
 	public function createTask(Project $project) {
 		if ($project->archived_at == null) {
-			$user = User::where('session_token', '=', $this->request->input('session_token'))->first();
+			$auth = User::where('session_token', '=', $this->request->input('session_token'))->first();
+            if (!$auth->is_admin || $project->users->contains($auth->id))
+            	return Response::json([
+            		"message" => "Must be a team member or administrator to create task."]); 
 
 			$task = new Task($this->request->all());
 			$task->created_by = $user->id;
@@ -310,6 +313,10 @@ class ProjectController extends Controller {
 
 	public function createMilestone(Project $project) {
 		if ($project->archived_at == null) {
+			$auth = User::where('session_token', '=', $this->request->input('session_token'))->first();
+            if (!$auth->is_admin || $project->users->contains($auth->id))
+            	return Response::json([
+            		"message" => "Must be a team member or administrator to create milestone."]); 
 
 			if (strlen(trim($this->request->input('title'))) <= 0)
 				return Response::json([
