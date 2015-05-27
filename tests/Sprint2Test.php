@@ -4,9 +4,9 @@ use Illuminate\Http\Request;
 
 use App\User;
 
-class Sprint1Test extends TestCase {
+class Sprint2Test extends TestCase {
 
-	public function getAdminUser() {
+	/*public function getAdminUser() {
 		return User::where('is_admin', '=', 1)->first();
 	}
 
@@ -29,7 +29,7 @@ class Sprint1Test extends TestCase {
 	}
 
 	/** TESTS */
-	public function testLogin()
+	/*public function testLogin()
 	{
 		$this->seed();
 
@@ -38,17 +38,6 @@ class Sprint1Test extends TestCase {
 			"password" => "admin"]);
 
 		$this->assertEquals(200, $response->getStatusCode());
-	}
-
-	public function testLoginWithIncorrectDetails()
-	{
-		$this->seed();
-
-		$response = $this->call('POST', '/users/login', [
-			"email" => "john@company.com",
-			"password" => "notadmin"]);
-
-		$this->assertEquals(401, $response->getStatusCode());
 	}
 
 	public function testCreation() 
@@ -61,73 +50,12 @@ class Sprint1Test extends TestCase {
 			"name" => "Somebody",
 			"email" => "somebody@liquidly.com", 
 			"password" => str_random(20),
-			"is_archived" => 0,
-			"is_admin" => 0,
 			"session_token" => $user->session_token ]);
 
 		$this->assertEquals(200, $response->getStatusCode());
 
 		$user = User::where("name", "=", "Somebody")->first();
 		$this->assertNotNull($user);
-	}
-
-	public function testCreationWithBlankName() 
-	{
-		$this->seed();
-
-		$user = $this->getLoggedInAdmin();
-
-		$response = $this->call('POST', '/users', [
-			"name" => "",
-			"email" => "somebody@liquidly.com", 
-			"password" => str_random(20),
-			"is_archived" => 0,
-			"is_admin" => 0,
-			"session_token" => $user->session_token ]);
-
-		$this->assertEquals(400, $response->getStatusCode());
-
-		$user = User::where("name", "=", "Somebody")->first();
-		$this->assertNull($user);
-	}
-	
-	public function testCreationWithBlankEmail() 
-	{
-		$this->seed();
-
-		$user = $this->getLoggedInAdmin();
-
-		$response = $this->call('POST', '/users', [
-			"name" => "Somebody",
-			"email" => "", 
-			"password" => str_random(20),
-			"is_archived" => 0,
-			"is_admin" => 0,
-			"session_token" => $user->session_token ]);
-
-		$this->assertEquals(400, $response->getStatusCode());
-
-		$user = User::where("name", "=", "Somebody")->first();
-		$this->assertNull($user);
-	}	
-	
-	public function testCreationUnAuthorised() 
-	{
-		$this->seed();
-
-		$user = $this->getLoggedInAdmin();
-
-		$response = $this->call('POST', '/users', [
-			"name" => "",
-			"email" => "somebody@liquidly.com", 
-			"password" => str_random(20),
-			"is_archived" => 0,
-			"is_admin" => 0, ]);
-
-		$this->assertEquals(401, $response->getStatusCode());
-
-		$user = User::where("name", "=", "Somebody")->first();
-		$this->assertNull($user);
 	}
 
 	public function testGetAll() 
@@ -141,7 +69,7 @@ class Sprint1Test extends TestCase {
 
 		$this->assertEquals(200, $response->getStatusCode());
 		$this->assertNotNull(json_decode($response->getContent()));
-		$this->assertEquals(count(User::all()), count(json_decode($response->getContent())));
+		$this->assertEquals(3, count(json_decode($response->getContent())));
 	}
 
 	public function testGet() 
@@ -222,5 +150,5 @@ class Sprint1Test extends TestCase {
 			"session_token" => $user->session_token]);
 
 		$this->assertEquals(200, $response->getStatusCode());
-	}
+	}*/
 }

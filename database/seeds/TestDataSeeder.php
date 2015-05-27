@@ -27,20 +27,20 @@ class TestDataSeeder extends Seeder {
 			$tasks = [];
 			$subtasks = [];
 
-			$admin_distribution = 2;
+			$admin_distribution = 50;
 
-			$num_users = 50;
-			$num_projects = 5;
-			$max_num_milestones = 6;
-			$min_num_tasks = 2;
-			$max_num_tasks = 12;
-			$max_num_subtasks = 4;
+			$num_users = 10;
+			$num_projects = 1;
+			$max_num_milestones = 2;
+			$min_num_tasks = 1;
+			$max_num_tasks = 3;
+			$max_num_subtasks = 1;
 
 			// USERS
 			$first_names_filename = "database/seeds/data/first_names.txt";
 			$last_names_filename = "database/seeds/data/last_names.txt";
 			$skills_filename = "database/seeds/data/skills.txt";
-			$admin_pct = 5;
+			$admin_pct = 50;
 
 
 			// read in names
@@ -56,7 +56,7 @@ class TestDataSeeder extends Seeder {
 			//
 			for ($i = 0; $i < $num_users; $i++) {
 
-				$is_admin = (rand(0, 100) < $admin_distribution);
+				$is_admin = (rand(0, 100) < $admin_distribution) || $i == 0;
 
 				$fname = $first_names[rand(0, count($first_names)-1)];
 				$lname = $last_names[rand(0, count($last_names)-1)];
@@ -78,8 +78,7 @@ class TestDataSeeder extends Seeder {
 
 				if ($is_admin)
 					array_push($admins, $user);
-				else
-					array_push($users, $user);
+				array_push($users, $user);
 
 				$num_skills = rand(5, 20);
 				$skill_count = count(Skill::all());
@@ -88,7 +87,7 @@ class TestDataSeeder extends Seeder {
 				}
 			}
 
-			echo "Users added. \n";
+			//echo "Users added. \n";
 
 			// PROJECTS
 			$project_names_filename = "database/seeds/data/project_names.txt";
@@ -120,7 +119,7 @@ class TestDataSeeder extends Seeder {
 				}
 			}
 
-			echo "Projects added. \n";
+			//echo "Projects added. \n";
 
 			// MILESTONES
 			for ($i = 0; $i < $num_projects; $i++) {
@@ -159,7 +158,7 @@ class TestDataSeeder extends Seeder {
 				}
 			}
 
-			echo "Milestones added. \n";
+			//echo "Milestones added. \n";
 
 			// TASKS	
 			$sentences_filename = "database/seeds/data/sentences.txt";
@@ -257,7 +256,7 @@ class TestDataSeeder extends Seeder {
 				}
 			}
 
-			echo "Tasks and comments added.\n";
+			//echo "Tasks and comments added.\n";
 
 		} catch (Exception $ex) {
 			echo $ex->getLine() . ': ' . $ex->getMessage();
@@ -268,7 +267,7 @@ class TestDataSeeder extends Seeder {
 	{
 		$project_users = $project->users;
 
-		$max_num_comments = 5;
+		$max_num_comments = 1;
 
 		$sentences_filename = "database/seeds/data/sentences.txt";
 		$sentences = file($sentences_filename, FILE_IGNORE_NEW_LINES);

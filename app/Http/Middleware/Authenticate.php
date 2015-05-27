@@ -19,9 +19,9 @@ class Authenticate {
 	{
 		$user = User::where('session_token', '=', $request->input('session_token'))->first();
 		if ($user == null)
-			return Response::json(['message' => 'Unauthorised request'], 400);
+			return Response::json(['message' => 'Unauthorised request'], 401);
 		else if ($user->is_archived == 1)
-			return Response::json(['message' => 'Unauthorised request (archived)'], 400);
+			return Response::json(['message' => 'Unauthorised request (archived)'], 401);
 		return $next($request);
 	}
 

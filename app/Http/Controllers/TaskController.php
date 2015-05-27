@@ -27,11 +27,11 @@ class TaskController extends Controller {
 	}
 
 	public function update(Task $task) {	
-		$auth = User::where('session_token', '=', 'session_token')->first();
+		$auth = User::where('session_token', '=', $this->request->input('session_token'))->first();
 
-		if ($task->project->archived_at == nulL) {
+		if ($task->project->archived_at == null) {
 
-			if ($task->resources->contains($auth->id) || $auth->is_admin || $task->project->managers->contains($auth->id)) {
+			if ($auth != null && ($task->resources->contains($auth->id) || $auth->is_admin || $task->project->managers->contains($auth->id))) {
 				$user = User::where('session_token', '=', $this->request->input('session_token'))->first();
 
 				$task->title = $this->request->input("title");
