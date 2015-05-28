@@ -215,17 +215,17 @@ class ProjectController extends Controller {
             		"message" => "Must be a team member or administrator to create task."]); 
 
 			$task = new Task($this->request->all());
-			$task->created_by = $user->id;
+			$task->created_by = $auth->id;
 			$task->parent_id = $this->request->input("parent");
 
-			if ($user->is_admin) {
+			if ($auth->is_admin) {
 				$task->approved_at = new DateTime('now');
-				$task->approved_by = $user->id;
+				$task->approved_by = $auth->id;
 			} else {
 				foreach ($project->managers as $key => $manager) {
-					if ($manager->id == $user->id) {
+					if ($manager->id == $auth->id) {
 						$task->approved_at = new DateTime('now');
-						$task->approved_by = $user->id;
+						$task->approved_by = $auth->id;
 					}
 				}
 			}
